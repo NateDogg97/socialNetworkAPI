@@ -1,34 +1,35 @@
 const { Schema, Types } = require('mongoose');
+const { format_date } = require('../utils/formatDate');
 
-const assignmentSchema = new Schema(
+// Schema to create a reaction model
+const reactionSchema = new Schema(
   {
-    assignmentId: {
+    reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
-    assignmentName: {
+    reactionBody: {
       type: String,
       required: true,
-      maxlength: 50,
-      minlength: 4,
-      default: 'Unnamed assignment',
+      max_length: 280
     },
-    score: {
-      type: Number,
+    username: {
+      type: String,
       required: true,
-      default: () => Math.floor(Math.random() * (100 - 70 + 1) + 70),
     },
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (date) => format_date(date)
     },
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true,
     },
     id: false,
   }
 );
 
-module.exports = assignmentSchema;
+module.exports = reactionSchema;
