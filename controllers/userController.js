@@ -4,13 +4,14 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
+      .populate({ path: 'thoughts', path: 'friends', select: '-__v' })
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
   // Get a user
   getSingleUser(req, res) {
-    User.findOne({ _id: req.params.UserId })
-      .select('-__v')
+    User.findOne({ _id: req.params.userId })
+      .populate({ path: 'thoughts', path: 'friends', select: '-__v' })
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
@@ -29,7 +30,7 @@ module.exports = {
   },
   // Delete a user
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.UserId })
+    User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
@@ -41,7 +42,7 @@ module.exports = {
   // Update a user
   updateUser(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.UserId },
+      { _id: req.params.userId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
