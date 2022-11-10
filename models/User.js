@@ -16,8 +16,18 @@ const userSchema = new Schema(
       validate: [validateEmail, 'Please use a valid email address'],
       match: [/^.+@(?:[\w-]+\.)+\w+$/, 'Please use a valid email address']
     },
-    thoughts: [{ type: Schema.Types.ObjectId, ref: 'thought' }],
-    friends: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+    thoughts: [
+      { 
+        type: Schema.Types.ObjectId, 
+        ref: 'thought' 
+      }
+    ],
+    friends: [
+      { 
+        type: Schema.Types.ObjectId, 
+        ref: 'user' 
+      }
+    ],
   },
   {
     toJSON: {

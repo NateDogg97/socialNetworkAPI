@@ -59,4 +59,12 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+
+  addReaction(req, res) {
+
+  },
+
+  removeReaction(req, res) {
+
+  },
 };
