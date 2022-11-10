@@ -4,14 +4,16 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
-      .populate({ path: 'thoughts', path: 'friends', select: '-__v' })
+      .populate({ path: 'thoughts', path: 'friends' })
+      .select('-__v')
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
   // Get a user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .populate({ path: 'thoughts', path: 'friends', select: '-__v' })
+      .populate({ path: 'thoughts', path: 'friends' })
+      .select('-__v')
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
@@ -58,7 +60,7 @@ module.exports = {
     User.create(req.body)
       .then((user) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { _id: req.params.userId },
           { $addToSet: { friends: user._id } },
           { new: true }
         );
@@ -80,7 +82,7 @@ module.exports = {
     User.findOneAndDelete({ _id: req.params.friendId })
       .then((user) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { _id: req.params.userId },
           { $pull: { friends: user._id } },
           { new: true }
         );
